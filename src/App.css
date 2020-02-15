@@ -8,7 +8,7 @@
   box-shadow: 0px 2px 5px 0px #cecece;
   margin: 1rem;
   padding: 0;
-  width: 100%;
+  width: 70%;
 }
 .table__body tr:first-child {
   border-top: none;
@@ -84,4 +84,8 @@
 }
 .table .table__row--subheader th {
   height: 4rem;
+}
+
+.photo_container {
+  height: auto;
 }

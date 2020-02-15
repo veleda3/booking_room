@@ -3,7 +3,7 @@ import {
   GET_BOOKINGS_DATA_REQUEST,
   GET_BOOKINGS_DATA_SUCCESS,
   GET_BOOKINGS_DATA_FAILURE,
-} from '../constants/actionsTypes';
+} from '../constants/actionTypes';
 import processError from '../helpers/processError';
 
 const getBookingsDataRequest = () => ({
@@ -24,7 +24,7 @@ const getBookingsDataFailure = message => ({
 });
 
 //makes the request to get the data
-export const getAccountingData = () => async (dispatch, getState) => {
+export const getBookingsData = () => async (dispatch, getState) => {
   dispatch(getBookingsDataRequest());
   let url = 'https://cove-coding-challenge-api.herokuapp.com/reservations';
   try {

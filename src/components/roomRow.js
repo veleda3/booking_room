@@ -1,25 +1,33 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import { formatAssetName, dailyBookings, bookingArray } from '../helpers/rooms'
+import { dailyBookings, bookingArray } from '../helpers/rooms'
 
 // Accept the 24 hour dayHours array as the day's booking data for a room
 const rowMapper = (dayHours, props) => {
   let tableRow = []
 
   // Loop through each hour from 8AM to 9PM (starting at 8AM = 0)
-  for (var i = 0; i < 13; i++) {
+  for (var i = 0; i < 17; i++) {
     // Extract the corresponding data from the 24 hour array
-    let bookingData = dayHours[i + 8]
+    if(i === 0) {
+      tableRow.push(<td className="table__cell--available">
+      <div className='photo_container'>
+        <img src={props.room.imageUrl}/>
+      </div>
+        </td>)
+    }
+    let bookingData = dayHours[i + 6]
 
     // If the data for that hour is a number (not a booking object), there is no booking
     // Add a <td> element that indicates the time slot is available
     if (typeof bookingData == 'number') {
       tableRow.push(<td className="table__cell--available">
-          <Link to="/createbooking" onClick={() => {
-              props.onSetRoom(props.room._id)
-        }} className="table__link--available">
-            &nbsp;
-          </Link>
+       <span
+                  onClick={() => props.onSetRoom(props.room.id)}
+                  className={`table__cell--booked`}
+                >
+                  &nbsp;
+                </span>
         </td>)
 
      // If the data is an array, there are two booking objects
@@ -88,17 +96,6 @@ const rowMapper = (dayHours, props) => {
 
 const RoomRow = props => (
   <tr className="table__row">
-    <th scope="row" className="table__cell--align-left">
-      <Link to="/createbooking" onClick={() => props.onSetRoom(props.room._id)} className="table__link">{props.room.name}</Link>
-      <ul >
-      {Object.keys(props.room.assets).map(
-        asset =>
-          props.room.assets[asset] && (
-            <li key={asset} onClick={props.onShowBooking} className="table__data--asset">{formatAssetName(asset)}</li>
-            )
-          )}
-      </ul>
-    </th>
     {rowMapper(
       bookingArray(dailyBookings(props.date, props.bookings)),
       props

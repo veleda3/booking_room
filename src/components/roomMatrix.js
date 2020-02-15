@@ -1,35 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import RoomRow from './RoomRow'
+import moment from 'moment'
+import RoomRow from './roomRow';
 
-const RoomMatrix = ({ rooms }) => (
+const bookingMatchRoom = (room, bookings, date) => bookings.filter(booked => booked.room.id === room.id && moment(booked.start).format('MM DD YYYY') === moment(date).format('MM DD YYYY'))
+
+const RoomMatrix = ({ rooms, date, bookings, onSetRoom }) => {
+  
+  return (
   <table className="table">
     <tr className="table__row table__row--header">
-      <th scope="colgroup" colSpan="15" className="table__cell--header table__cell--level table__cell--align-left">
+      <th scope="colgroup" colSpan="18" className="table__cell--header table__cell--level table__cell--align-left">
         Schedule a room for the day
       </th>
     </tr>
     <tr className="table__row table__row--subheader">
       <th scope="col" className="table__cell--header table__cell--align-left">
         Room
-      </th>
-      <th scope="col" className="table__cell--header">
-        12am
-      </th>
-      <th scope="col" className="table__cell--header">
-        1am
-      </th>
-      <th scope="col" className="table__cell--header">
-        2am
-      </th>
-      <th scope="col" className="table__cell--header">
-        3am
-      </th>
-      <th scope="col" className="table__cell--header">
-        4am
-      </th>
-      <th scope="col" className="table__cell--header">
-        5am
       </th>
       <th scope="col" className="table__cell--header">
         6am
@@ -79,31 +66,23 @@ const RoomMatrix = ({ rooms }) => (
       <th scope="col" className="table__cell--header">
         9pm
       </th>
-      <th scope="col" className="table__cell--header">
-        10pm
-      </th>
-      <th scope="col" className="table__cell--header">
-        11pm
-      </th>
     </tr>
     <tbody className="table__body">
-      {rooms.map(room => (
+      {rooms && rooms.map(room => (
           <RoomRow
             key={room.id}
             room={room}
-            bookings={room.bookings}
-            date={props.date === null ? new Date() : props.date}
-            onShowBooking={props.onShowBooking}
-            onSetRoom={props.onSetRoom}
+            bookings={bookingMatchRoom(room, bookings, date)}
+            date={date ? date : new Date()}
           />
         ))}
     </tbody>
   </table>
-)
+)}
 
 RoomMatrix.propTypes = {
   rooms: PropTypes.array,
+  getRoomsData: PropTypes.func
 }
-
 
 export default RoomMatrix
